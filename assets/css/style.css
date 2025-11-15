@@ -69,14 +69,24 @@ hr {
   background: transparent;
   border: none;
   color: red;
-  font-size: 1.2em;
-  cursor: pointer;
+  font-size: 1.1em;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 
 .btn-eliminar:hover {
-  color: darkred;
+  background: greenyellow;
+  color: dark;
 }
+
 
 .item-participante {
   display: flex;
@@ -104,12 +114,14 @@ hr {
   padding: 8px 12px;
   border-radius: 5px;
   margin-bottom: 8px;
+  gap: 10px;
+  flex-wrap: wrap; /* <- Esto permite que el texto salte de línea si hace falta */
 }
 
 .item-exclusion span {
-  flex: 1;
+  flex-grow: 1;
   white-space: normal;
-  overflow: visible;
-  text-overflow: initial;
+  overflow-wrap: break-word;
 }
+
 
