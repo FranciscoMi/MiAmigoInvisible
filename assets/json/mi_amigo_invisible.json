@@ -1,0 +1,56 @@
+{
+  "correoEnvio": "maikelfrankie@gmail.com",
+  "clave": "vzon dmxo xtya apxb",
+  "participantes": [
+    {
+      "nombre": "Fran",
+      "correo": "franlope@gmail.com"
+    },
+    {
+      "nombre": "Natalia",
+      "correo": "revenganatalia@gmail.com"
+    },
+    {
+      "nombre": "Iván",
+      "correo": "ivanserranso@gmail.com"
+    },
+    {
+      "nombre": "Lorena",
+      "correo": "lorenaelua@gmail.com"
+    },
+    {
+      "nombre": "David",
+      "correo": "davidanpau@gmail.com"
+    },
+    {
+      "nombre": "Marta",
+      "correo": "martacu1@yahoo.es"
+    }
+  ],
+  "asignaciones": [
+    {
+      "de": "Fran",
+      "a": "Marta"
+    },
+    {
+      "de": "Natalia",
+      "a": "David"
+    },
+    {
+      "de": "Iván",
+      "a": "Fran"
+    },
+    {
+      "de": "Lorena",
+      "a": "Natalia"
+    },
+    {
+      "de": "David",
+      "a": "Iván"
+    },
+    {
+      "de": "Marta",
+      "a": "Lorena"
+    }
+  ]
+}

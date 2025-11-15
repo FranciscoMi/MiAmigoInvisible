@@ -1,0 +1,27 @@
+# --------------------------
+# Node / NPM
+# --------------------------
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# --------------------------
+# Archivos del sistema
+# --------------------------
+.DS_Store
+Thumbs.db
+
+# --------------------------
+# Entornos
+# --------------------------
+.env
+
+# --------------------------
+# Ignorar carpeta JSON completa
+# --------------------------
+json/*
+!json/.gitkeep
+
+# Si quieres mantener la carpeta vacía en el repo,
+# crea un archivo json/.gitkeep

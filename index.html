@@ -19,7 +19,7 @@
 
   <button onclick="guardarCorreoYAvanzar()">Siguiente</button>
 
-  <hr>
+  --<hr>
 
   <label for="archivo-json">📂 Cargar archivo JSON:</label>
   <input type="file" id="archivo-json" accept=".json" onchange="cargarDesdeArchivo()">
@@ -30,16 +30,16 @@
 <section id="pantalla-participantes" class="pantalla">
   <h2>👥 Participantes</h2>
 
-  <label for="nombre-participante">Nombre:</label>
-  <input type="text" id="nombre-participante">
-
-  <label for="correo-participante">Correo:</label>
-  <input type="email" id="correo-participante">
-
+  <label>Nombre: <input type="text" id="nombre-participante"></label>
+  <label>Correo: <input type="email" id="correo-participante"></label>
   <button onclick="agregarParticipante()">Agregar</button>
+
   <div id="lista-participantes" class="lista"></div>
+
+  
   <button onclick="avanzarAExclusiones()">Siguiente</button>
 </section>
+
 
 
   <!-- Pantalla 3: Exclusiones -->
@@ -63,8 +63,15 @@
     <div id="lista-exclusiones" class="lista"></div>
     <button onclick="descargarDatos()">Guardar como JSON</button>
     <hr>
+    <button onclick="mostrarPantalla('pantalla-sorteo')">Ir al sorteo</button>
   </section>
 
+<!-- Pantalla 4: Sorteo -->
+<section id="pantalla-sorteo" class="pantalla">
+  <h2>🎲 Sorteo</h2>
+  <button onclick="realizarSorteo()">Hacer sorteo</button>
+  <div id="resultado-sorteo" class="lista" style="margin-top: 15px;"></div>
+</section>
 
   <script src="/assets/js/main.js"></script>
 </body>

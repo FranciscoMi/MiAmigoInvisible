@@ -13,7 +13,7 @@ function mostrarPantalla(id) {
 
 function guardarCorreoYAvanzar() {
   const correo = correoEnvioInput.value.trim();
-  const clave = claveEnvioInput.value.trim(); // No se guarda
+  const clave = claveEnvioInput.value.trim();
 
   if (!correo || !clave) {
     alert('Debes ingresar correo y clave');
@@ -21,6 +21,8 @@ function guardarCorreoYAvanzar() {
   }
 
   localStorage.setItem('correoEnvio', correo);
+  localStorage.setItem('claveEnvio', clave);
+
   mostrarPantalla('pantalla-participantes');
 }
 
@@ -38,7 +40,6 @@ function agregarParticipante() {
 
   document.getElementById('nombre-participante').value = '';
   document.getElementById('correo-participante').value = '';
-
 }
 
 function actualizarListaParticipantes() {
@@ -54,32 +55,11 @@ function actualizarListaParticipantes() {
   localStorage.setItem('participantes', JSON.stringify(participantes));
 }
 
-function actualizarListaExclusiones() {
-  listaExclusiones.innerHTML = exclusiones
-    .map((e, i) => `
-      <div class="item-exclusion">
-        <span>${e[0]} ❌ ${e[1]}</span>
-        <button onclick="eliminarExclusion(${i})" class="btn-eliminar">❌</button>
-      </div>
-    `)
-    .join('');
-    
-  localStorage.setItem('exclusiones', JSON.stringify(exclusiones));
-}
-
-
 function eliminarParticipante(index) {
   if (confirm(`¿Eliminar a ${participantes[index].nombre}?`)) {
     participantes.splice(index, 1);
     actualizarListaParticipantes();
-    actualizarSelectsExclusiones(); // actualiza los selects por si ya están en uso
-  }
-}
-
-function eliminarExclusion(index) {
-  if (confirm(`¿Eliminar la exclusión ${exclusiones[index][0]} ❌ ${exclusiones[index][1]}?`)) {
-    exclusiones.splice(index, 1);
-    actualizarListaExclusiones();
+    actualizarSelectsExclusiones();
   }
 }
 
@@ -92,7 +72,6 @@ function avanzarAExclusiones() {
   actualizarSelectsExclusiones();
   mostrarPantalla('pantalla-exclusiones');
 }
-
 
 function agregarExclusion() {
   const nombre1 = document.getElementById('nombre1').value;
@@ -108,7 +87,6 @@ function agregarExclusion() {
     return;
   }
 
-  // Verificar si ya existe la exclusión
   const yaExiste = exclusiones.some(([a, b]) => a === nombre1 && b === nombre2);
   if (yaExiste) {
     alert('Esa exclusión ya existe');
@@ -123,16 +101,33 @@ function agregarExclusion() {
   actualizarSelectsExclusiones();
 }
 
+function actualizarListaExclusiones() {
+  listaExclusiones.innerHTML = exclusiones
+    .map((e, i) => `
+      <div class="item-exclusion">
+        <span>${e[0]} ❌ ${e[1]}</span>
+        <button onclick="eliminarExclusion(${i})" class="btn-eliminar">❌</button>
+      </div>
+    `)
+    .join('');
+
+  localStorage.setItem('exclusiones', JSON.stringify(exclusiones));
+}
+
+function eliminarExclusion(index) {
+  if (confirm(`¿Eliminar la exclusión ${exclusiones[index][0]} ❌ ${exclusiones[index][1]}?`)) {
+    exclusiones.splice(index, 1);
+    actualizarListaExclusiones();
+  }
+}
 
 function actualizarSelectsExclusiones() {
   const select1 = document.getElementById('nombre1');
   const select2 = document.getElementById('nombre2');
 
-  // Obtener la selección actual (si hay) para mantenerla tras la actualización
   const selected1 = select1.value;
   const selected2 = select2.value;
 
-  // Limpiar selects
   [select1, select2].forEach(select => {
     select.innerHTML = '<option value="">-- Selecciona un participante --</option>';
   });
@@ -143,7 +138,6 @@ function actualizarSelectsExclusiones() {
     option1.value = option2.value = p.nombre;
     option1.textContent = option2.textContent = p.nombre;
 
-    // Evita que se elija la misma persona en ambos selects
     if (p.nombre === selected2) option1.disabled = true;
     if (p.nombre === selected1) option2.disabled = true;
 
@@ -151,7 +145,6 @@ function actualizarSelectsExclusiones() {
     select2.appendChild(option2);
   });
 
-  // Restaura selección previa
   if (selected1) select1.value = selected1;
   if (selected2) select2.value = selected2;
 }
@@ -159,6 +152,7 @@ function actualizarSelectsExclusiones() {
 function descargarDatos() {
   const datos = {
     correoEnvio: localStorage.getItem('correoEnvio'),
+    clave: localStorage.getItem('claveEnvio'),
     participantes,
     exclusiones
   };
@@ -172,7 +166,7 @@ function descargarDatos() {
   enlace.download = "mi_amigo_invisible.json";
   enlace.click();
 
-  URL.revokeObjectURL(url); // Liberar memoria
+  URL.revokeObjectURL(url);
 }
 
 function cargarDesdeArchivo() {
@@ -190,17 +184,16 @@ function cargarDesdeArchivo() {
     try {
       const datos = JSON.parse(e.target.result);
 
-      if (!datos.correoEnvio || !Array.isArray(datos.participantes) || !Array.isArray(datos.exclusiones)) {
+      if (!datos.correoEnvio || !datos.clave || !Array.isArray(datos.participantes) || !Array.isArray(datos.exclusiones)) {
         throw new Error('El archivo no tiene el formato correcto');
       }
 
       localStorage.setItem('correoEnvio', datos.correoEnvio);
+      localStorage.setItem('claveEnvio', datos.clave);
 
-      // Vaciar los arrays actuales
       participantes.length = 0;
       exclusiones.length = 0;
 
-      // Cargar los datos
       datos.participantes.forEach(p => participantes.push(p));
       datos.exclusiones.forEach(e => exclusiones.push(e));
 
@@ -208,8 +201,9 @@ function cargarDesdeArchivo() {
       actualizarListaExclusiones();
       actualizarSelectsExclusiones();
 
-      // Mostrar la siguiente pantalla automáticamente
       correoEnvioInput.value = datos.correoEnvio;
+      claveEnvioInput.value = datos.clave;
+
       mostrarPantalla('pantalla-participantes');
 
       alert('Archivo cargado correctamente. Puedes continuar editando.');
@@ -221,7 +215,93 @@ function cargarDesdeArchivo() {
   lector.readAsText(archivo);
 }
 
+function guardarParaEnvio(asignaciones) {
+  const datos = {
+    correoEnvio: localStorage.getItem('correoEnvio'),
+    clave: localStorage.getItem('claveEnvio'),
+    participantes: participantes.map(p => ({ nombre: p.nombre, correo: p.correo })),
+    asignaciones
+  };
+
+  const blob = new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const enlace = document.createElement('a');
+  enlace.href = url;
+  enlace.download = "mi_amigo_invisible.json";
+  enlace.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function realizarSorteo() {
+  const resultadoDiv = document.getElementById('resultado-sorteo');
+  const maxIntentos = 1000;
+  let intento = 0;
+  let asignaciones = null;
+
+  while (intento < maxIntentos && !asignaciones) {
+    const posibles = [...participantes];
+    const copia = [...participantes];
+    const tempAsignaciones = [];
+    let valido = true;
+
+    for (let p of posibles) {
+      const opciones = copia.filter(c =>
+        c.nombre !== p.nombre &&
+        !exclusiones.some(([a, b]) => a === p.nombre && b === c.nombre)
+      );
+
+      if (opciones.length === 0) {
+        valido = false;
+        break;
+      }
+
+      const elegido = opciones[Math.floor(Math.random() * opciones.length)];
+      tempAsignaciones.push({ de: p.nombre, a: elegido.nombre });
+
+      const index = copia.findIndex(c => c.nombre === elegido.nombre);
+      copia.splice(index, 1);
+    }
+
+    if (valido && tempAsignaciones.length === participantes.length) {
+      asignaciones = tempAsignaciones;
+    }
+
+    intento++;
+  }
+
+  if (!asignaciones) {
+    resultadoDiv.innerHTML = `<p style="color: red;">❌ No se pudo generar un sorteo válido. Revisa las exclusiones o el número de participantes.</p>`;
+    return;
+  }
+
+  resultadoDiv.innerHTML = `
+    <h3>🎁 Sorteo generado con éxito</h3>
+    <p>📩 Se ha generado el archivo para enviar los correos. Ejecuta el script de Node.</p>
+  `;
+
+  // Guardar en archivo JSON
+  const datos = {
+    correoEnvio: localStorage.getItem('correoEnvio'),
+    clave: localStorage.getItem('claveEnvio'),
+    participantes: participantes.map(p => ({ nombre: p.nombre, correo: p.correo })),
+    asignaciones
+  };
+
+  const blob = new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const enlace = document.createElement('a');
+  enlace.href = url;
+  enlace.download = "mi_amigo_invisible.json";
+  enlace.click();
+
+  URL.revokeObjectURL(url);
+
+  alert(`📤 Correos listos para enviar. Ejecuta el script Node (enviarCorreos.js).`);
+}
+
 
 document.getElementById('nombre1').addEventListener('change', actualizarSelectsExclusiones);
 document.getElementById('nombre2').addEventListener('change', actualizarSelectsExclusiones);
-
