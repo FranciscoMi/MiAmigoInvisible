@@ -3,9 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <title>Mi amigo Invisible</title>
 </head>
 <body>
-  
+  <!-- Pantalla 1: Bienvenida -->
+  <section id="pantalla-bienvenida" class="pantalla visible">
+    <h1>🎁 Mi Amigo Invisible</h1>
+    <label>Correo de envío: <input type="email" id="correo-envio"></label>
+    <label>Clave de la cuenta: <input type="password" id="clave-envio"></label>
+    <button onclick="guardarCorreoYAvanzar()">Siguiente</button>
+  </section>
+
+  <!-- Pantalla 2: Participantes -->
+  <section id="pantalla-participantes" class="pantalla">
+    <h2>👥 Participantes</h2>
+    <label>Nombre: <input type="text" id="nombre-participante"></label>
+    <label>Correo: <input type="email" id="correo-participante"></label>
+    <button onclick="agregarParticipante()">Agregar</button>
+    <div id="lista-participantes" class="lista"></div>
+    <button onclick="avanzarAExclusiones()">Siguiente</button>
+  </section>
+
+  <!-- Pantalla 3: Exclusiones -->
+  <section id="pantalla-exclusiones" class="pantalla">
+    <h2>🚫 Exclusiones</h2>
+    <label>
+  Nombre 1:
+  <select id="nombre1">
+    <option value="">-- Selecciona un participante --</option>
+  </select>
+</label>
+
+<label>
+  No puede regalar a:
+  <select id="nombre2">
+    <option value="">-- Selecciona un participante --</option>
+  </select>
+</label>
+
+    <button onclick="agregarExclusion()">Agregar</button>
+    <div id="lista-exclusiones" class="lista"></div>
+    <button onclick="descargarDatos()">Guardar como JSON</button>
+    <hr>
+    <label for="archivo-json">📂 Cargar archivo JSON:</label>
+    <input type="file" id="archivo-json" accept=".json" onchange="cargarDesdeArchivo()">
+
+  </section>
+
+
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
