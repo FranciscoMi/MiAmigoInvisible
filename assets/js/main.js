@@ -38,13 +38,49 @@ function agregarParticipante() {
 
   document.getElementById('nombre-participante').value = '';
   document.getElementById('correo-participante').value = '';
+
 }
 
 function actualizarListaParticipantes() {
   listaParticipantes.innerHTML = participantes
-    .map(p => `<div>${p.nombre} - ${p.correo}</div>`)
+    .map((p, i) => `
+      <div class="item-participante">
+        <span>${p.nombre} - ${p.correo}</span>
+        <button onclick="eliminarParticipante(${i})" class="btn-eliminar">❌</button>
+      </div>
+    `)
     .join('');
+
   localStorage.setItem('participantes', JSON.stringify(participantes));
+}
+
+function actualizarListaExclusiones() {
+  listaExclusiones.innerHTML = exclusiones
+    .map((e, i) => `
+      <div class="item-exclusion">
+        <span>${e[0]} ❌ ${e[1]}</span>
+        <button onclick="eliminarExclusion(${i})" class="btn-eliminar">❌</button>
+      </div>
+    `)
+    .join('');
+    
+  localStorage.setItem('exclusiones', JSON.stringify(exclusiones));
+}
+
+
+function eliminarParticipante(index) {
+  if (confirm(`¿Eliminar a ${participantes[index].nombre}?`)) {
+    participantes.splice(index, 1);
+    actualizarListaParticipantes();
+    actualizarSelectsExclusiones(); // actualiza los selects por si ya están en uso
+  }
+}
+
+function eliminarExclusion(index) {
+  if (confirm(`¿Eliminar la exclusión ${exclusiones[index][0]} ❌ ${exclusiones[index][1]}?`)) {
+    exclusiones.splice(index, 1);
+    actualizarListaExclusiones();
+  }
 }
 
 function avanzarAExclusiones() {
@@ -87,13 +123,6 @@ function agregarExclusion() {
   actualizarSelectsExclusiones();
 }
 
-
-function actualizarListaExclusiones() {
-  listaExclusiones.innerHTML = exclusiones
-    .map(e => `<div>${e[0]} ❌ ${e[1]}</div>`)
-    .join('');
-  localStorage.setItem('exclusiones', JSON.stringify(exclusiones));
-}
 
 function actualizarSelectsExclusiones() {
   const select1 = document.getElementById('nombre1');
@@ -171,7 +200,7 @@ function cargarDesdeArchivo() {
       participantes.length = 0;
       exclusiones.length = 0;
 
-      // Rellenar con los datos cargados
+      // Cargar los datos
       datos.participantes.forEach(p => participantes.push(p));
       datos.exclusiones.forEach(e => exclusiones.push(e));
 
@@ -179,7 +208,11 @@ function cargarDesdeArchivo() {
       actualizarListaExclusiones();
       actualizarSelectsExclusiones();
 
-      alert('Datos cargados correctamente');
+      // Mostrar la siguiente pantalla automáticamente
+      correoEnvioInput.value = datos.correoEnvio;
+      mostrarPantalla('pantalla-participantes');
+
+      alert('Archivo cargado correctamente. Puedes continuar editando.');
     } catch (error) {
       alert('Error al cargar el archivo JSON: ' + error.message);
     }
@@ -187,6 +220,7 @@ function cargarDesdeArchivo() {
 
   lector.readAsText(archivo);
 }
+
 
 document.getElementById('nombre1').addEventListener('change', actualizarSelectsExclusiones);
 document.getElementById('nombre2').addEventListener('change', actualizarSelectsExclusiones);

@@ -9,21 +9,38 @@
 <body>
   <!-- Pantalla 1: Bienvenida -->
   <section id="pantalla-bienvenida" class="pantalla visible">
-    <h1>🎁 Mi Amigo Invisible</h1>
-    <label>Correo de envío: <input type="email" id="correo-envio"></label>
-    <label>Clave de la cuenta: <input type="password" id="clave-envio"></label>
-    <button onclick="guardarCorreoYAvanzar()">Siguiente</button>
-  </section>
+  <h1>🎁 Mi Amigo Invisible</h1>
 
-  <!-- Pantalla 2: Participantes -->
-  <section id="pantalla-participantes" class="pantalla">
-    <h2>👥 Participantes</h2>
-    <label>Nombre: <input type="text" id="nombre-participante"></label>
-    <label>Correo: <input type="email" id="correo-participante"></label>
-    <button onclick="agregarParticipante()">Agregar</button>
-    <div id="lista-participantes" class="lista"></div>
-    <button onclick="avanzarAExclusiones()">Siguiente</button>
-  </section>
+  <label for="correo-envio">Correo de envío:</label>
+  <input type="email" id="correo-envio">
+
+  <label for="clave-envio">Clave de la cuenta:</label>
+  <input type="password" id="clave-envio">
+
+  <button onclick="guardarCorreoYAvanzar()">Siguiente</button>
+
+  <hr>
+
+  <label for="archivo-json">📂 Cargar archivo JSON:</label>
+  <input type="file" id="archivo-json" accept=".json" onchange="cargarDesdeArchivo()">
+</section>
+
+
+ <!-- Pantalla 2: Participantes -->
+<section id="pantalla-participantes" class="pantalla">
+  <h2>👥 Participantes</h2>
+
+  <label for="nombre-participante">Nombre:</label>
+  <input type="text" id="nombre-participante">
+
+  <label for="correo-participante">Correo:</label>
+  <input type="email" id="correo-participante">
+
+  <button onclick="agregarParticipante()">Agregar</button>
+  <div id="lista-participantes" class="lista"></div>
+  <button onclick="avanzarAExclusiones()">Siguiente</button>
+</section>
+
 
   <!-- Pantalla 3: Exclusiones -->
   <section id="pantalla-exclusiones" class="pantalla">
@@ -34,7 +51,7 @@
     <option value="">-- Selecciona un participante --</option>
   </select>
 </label>
-
+<hr>
 <label>
   No puede regalar a:
   <select id="nombre2">
@@ -46,9 +63,6 @@
     <div id="lista-exclusiones" class="lista"></div>
     <button onclick="descargarDatos()">Guardar como JSON</button>
     <hr>
-    <label for="archivo-json">📂 Cargar archivo JSON:</label>
-    <input type="file" id="archivo-json" accept=".json" onchange="cargarDesdeArchivo()">
-
   </section>
 
 

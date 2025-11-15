@@ -49,3 +49,67 @@ button:hover {
   background: #eee;
   border-radius: 5px;
 }
+
+input[type="file"] {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  font-size: 1em;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.btn-eliminar {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.btn-eliminar:hover {
+  color: darkred;
+}
+
+.item-participante {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eee;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.item-participante span {
+  flex: 1;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+}
+
+
+.item-exclusion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fbeaea;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.item-exclusion span {
+  flex: 1;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+}
+
