@@ -20,8 +20,12 @@ Thumbs.db
 # --------------------------
 # Ignorar carpeta JSON completa
 # --------------------------
-json/*
-!json/.gitkeep
+# Ignorar todo el contenido de assets/json
+/assets/json/*
+
+# Pero no ignores el archivo .gitkeep
+!/assets/json/.gitkeep
+
 
 # Si quieres mantener la carpeta vacía en el repo,
 # crea un archivo json/.gitkeep
